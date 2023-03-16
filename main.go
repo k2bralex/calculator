@@ -1,5 +1,7 @@
 package main
 
+import "calc/internal/app"
+
 func main() {
-	Run()
+	app.Run()
 }

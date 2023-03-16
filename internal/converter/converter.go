@@ -1,21 +1,20 @@
-package main
+package converter
 
 import (
 	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
-// romanToArabic parse roman number to arabic. If validation successful.
+// Decode parse roman number to arabic. If validation successful.
 // If not return error
-func romanToArabic(s string) (int, error) {
+func Decode(s string) (int64, error) {
 	if !validRoman(s) {
 		return 0, fmt.Errorf("ronam number not valid")
 	}
 
 	keys := []string{"CM", "CD", "XC", "XL", "IX", "IV", "I", "V", "X", "L", "C", "D", "M"}
-	romanArabic := map[string]int{
+	romanArabic := map[string]int64{
 		"I":  1,
 		"V":  5,
 		"X":  10,
@@ -31,9 +30,9 @@ func romanToArabic(s string) (int, error) {
 		"IV": 4,
 	}
 
-	res := 0
+	var res int64 = 0
 	for _, key := range keys {
-		res = res + (strings.Count(s, key) * romanArabic[key])
+		res = res + int64(strings.Count(s, key))*romanArabic[key]
 		s = strings.ReplaceAll(s, key, "")
 	}
 
@@ -47,9 +46,9 @@ func validRoman(s string) bool {
 	return matched
 }
 
-// arabicToRoman based on the fact that Roman numbers have a range encode arabic
+// Encode based on the fact that Roman numbers have a range encode arabic
 // to roman.
-func arabicToRoman(n int) (string, error) {
+func Encode(n int64) (string, error) {
 	if n <= 0 {
 		return "", fmt.Errorf("roman can't be zero or negative")
 	}
@@ -61,7 +60,7 @@ func arabicToRoman(n int) (string, error) {
 	for n > 0 {
 		if n >= 1000 {
 			m := n / 1000
-			res += strings.Repeat("M", m)
+			res += strings.Repeat("M", int(m))
 			n -= 1000 * m
 		}
 
@@ -72,7 +71,7 @@ func arabicToRoman(n int) (string, error) {
 
 		if n >= 500 && n < 900 {
 			d1 := n % 500 / 100
-			res += "D" + strings.Repeat("C", d1)
+			res += "D" + strings.Repeat("C", int(d1))
 			n -= 500 + 100*d1
 		}
 
@@ -83,7 +82,7 @@ func arabicToRoman(n int) (string, error) {
 
 		if n >= 100 && n < 400 {
 			d2 := n / 100
-			res += strings.Repeat("C", d2)
+			res += strings.Repeat("C", int(d2))
 			n %= 100 * d2
 		}
 
@@ -94,7 +93,7 @@ func arabicToRoman(n int) (string, error) {
 
 		if n >= 50 && n < 90 {
 			l := n/10 - 5
-			res += "L" + strings.Repeat("X", l)
+			res += "L" + strings.Repeat("X", int(l))
 			n %= 10
 		}
 
@@ -105,7 +104,7 @@ func arabicToRoman(n int) (string, error) {
 
 		if n >= 10 && n <= 40 {
 			x := n / 10
-			res += strings.Repeat("X", x)
+			res += strings.Repeat("X", int(x))
 			n %= 10
 		}
 
@@ -116,7 +115,7 @@ func arabicToRoman(n int) (string, error) {
 
 		if n >= 5 && n < 9 {
 			v := n % 5
-			res += "V" + strings.Repeat("I", v)
+			res += "V" + strings.Repeat("I", int(v))
 			n -= v + 5
 		}
 
@@ -125,19 +124,10 @@ func arabicToRoman(n int) (string, error) {
 			n -= n
 		}
 		if n > 0 && n < 4 {
-			res += strings.Repeat("I", n)
+			res += strings.Repeat("I", int(n))
 			n -= n
 		}
 	}
 
 	return res, nil
-}
-
-// valueParse try parse int
-func valueParse(s string) (int, error) {
-	v, err := strconv.ParseInt(s, 10, 0)
-	if err != nil {
-		return 0, fmt.Errorf("not integer value")
-	}
-	return int(v), err
 }
