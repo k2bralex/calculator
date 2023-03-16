@@ -12,7 +12,7 @@ func Run() {
 			return
 		}
 
-		// Check user input and print if any error and go to next next iteration
+		// Check user input and print if any error and go to next iteration
 		isArabic, err := inputCheck(input)
 		if err != nil {
 			fmt.Println(err.Error())
