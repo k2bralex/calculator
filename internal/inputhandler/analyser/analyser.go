@@ -4,6 +4,7 @@ import (
 	. "calc/internal/pkg"
 	"fmt"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
@@ -31,9 +32,13 @@ func OperandCheck(opd *[]string) (*[]string, *[]int64, error) {
 	return nil, &nums, nil
 }
 
-func OperatorsCheck(input string, sl *[]rune) error {
+func OperatorsCheck(input string, operators *[]rune) error {
+	if strings.ContainsAny(string(*operators), input[0:1]) ||
+		strings.ContainsAny(string(*operators), input[len(input)-1:]) {
+		return fmt.Errorf("not mathematical expression")
+	}
 	for _, r := range []rune(input) {
-		if !unicode.IsDigit(r) && !unicode.IsLetter(r) && !Contains(r, *sl) {
+		if !unicode.IsDigit(r) && !unicode.IsLetter(r) && !Contains(r, *operators) {
 			return fmt.Errorf("unknown operator")
 		}
 	}

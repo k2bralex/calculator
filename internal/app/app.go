@@ -21,18 +21,12 @@ func Run() {
 		opd, ops, err := InputHandler(input)
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
 
 		c := model.Calculator{Operands: opd, Operators: ops}
 		fmt.Println("Result: " + c.Start())
 	}
-}
-
-func romanPrinter(s string, err error) {
-	if err != nil {
-		fmt.Printf("%s", err.Error())
-	}
-	fmt.Printf("%s\n", s)
 }
 
 // inputReader use bufio Package read from console and save into string

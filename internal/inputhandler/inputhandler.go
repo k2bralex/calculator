@@ -3,7 +3,6 @@ package inputhandler
 import (
 	. "calc/internal/inputhandler/analyser"
 	. "calc/internal/inputhandler/parser"
-	"fmt"
 )
 
 var (
@@ -18,7 +17,7 @@ func InputHandler(input string) (interface{}, *[]string, error) {
 
 	opd, opr, err := ParseString(input, &OPERATORS)
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, nil, err
 	}
 
 	str, ints, err := OperandCheck(opd)
