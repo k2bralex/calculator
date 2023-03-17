@@ -13,7 +13,31 @@ type Calculator struct {
 func (c *Calculator) Start() string {
 	var (
 		result int64
+		arabic = &[]int64{}
 	)
+
+	/*switch c.Operands.(type) {
+	case *[]int64:
+		arabic = (c.Operands).(*[]int64)
+		result = Calculate(arabic, c.Operators)
+
+		return strconv.FormatInt(result, 10)
+	case *[]string:
+		for _, v := range *(c.Operands).(*[]string) {
+			val, err := converter.Decode(v)
+			if err != nil {
+				return err.Error()
+			}
+			*arabic = append(*arabic, val)
+		}
+
+		result, err := converter.Encode(Calculate(arabic, c.Operators))
+		if err != nil {
+			return err.Error()
+		}
+
+		return result
+	}*/
 
 	arabic, ok := (c.Operands).(*[]int64)
 	if !ok {
